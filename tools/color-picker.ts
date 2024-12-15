@@ -2,7 +2,7 @@ import { tool as createTool } from 'ai';
 import { z } from 'zod';
 
 export const chooseColor = createTool({
-  description: 'Display a color picker to help you choose a color family',
+  description: 'Display a color picker to help you choose a color from a color family',
   parameters: z.object({
     colorFamily: z.string(),
   }),

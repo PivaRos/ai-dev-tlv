@@ -4,9 +4,18 @@ import { useChat } from 'ai/react';
 import {Message} from "ai";
 import ColorPicker from "@/components/ColorPicker";
 import ColorPreview from "@/components/ColorPreview";
+import {useEffect, useRef} from "react";
 
 export default function Page() {
   const { messages, input, handleInputChange, handleSubmit, append } = useChat();
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (messageEndRef.current) {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
 
   const renderUI = (message: Message) => {
 
@@ -72,6 +81,7 @@ export default function Page() {
               </div>
 
           ))}
+          <div ref={messageEndRef}/>
         </div>
 
         <form onSubmit={handleSubmit} className="w-full max-w-md p-4 bg-gray-800 sticky bottom-0">
