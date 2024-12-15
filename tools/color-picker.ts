@@ -8,7 +8,7 @@ export const chooseColor = createTool({
   }),
   execute: async function ({colorFamily}) {
     await new Promise(resolve => setTimeout(resolve, 2000));
-    return { colorFamily};
+    return { colorFamily };
   },
 });
 

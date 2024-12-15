@@ -7,7 +7,10 @@ export async function POST(request: Request) {
 
   const result = streamText({
     model: openai('gpt-4o'),
-    system: 'You are an house decoration expert, and you are helping a customer to choose the right color for their living room.',
+    system: `
+      You are an house decoration expert, and you are helping a customer 
+      to choose the right color for any purpose.     
+    `,
     messages,
     maxSteps: 5,
     tools

@@ -2,26 +2,20 @@
 
 import { useChat } from 'ai/react';
 import {Message} from "ai";
-import ColorPicker from "@/components/ColorPicker";
-import ColorPreview from "@/components/ColorPreview";
-import {useEffect, useRef} from "react";
+import ColorPicker from "@/app/csr/ColorPicker";
+import ColorPreview from "@/app/csr/ColorPreview";
+import {useScrollToView} from "@/hooks/useScrollToView";
 import Link from "next/link";
 
 export default function Page() {
   const { messages, input, handleInputChange, handleSubmit, append } = useChat();
-  const messageEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages]);
+  const messageEndRef = useScrollToView(messages);
 
   const renderUI = (message: Message) => {
     const handleColorSelected = async (rgb: string) => {
       await append({
         role: 'user',
-        content: `my selected color in RGB is ${rgb}`,
+        content: `my selected color in RGB is ${rgb}. recommend me a color that matched`,
       });
     }
 
@@ -59,17 +53,20 @@ export default function Page() {
 
   return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-black text-white">
+        {/* Back button to return to home page */}
         <div className="absolute top-4 left-4">
           <Link href="/" className="flex items-center text-white text-2xl">
             ⬅
           </Link>
         </div>
+
+        {/* The Feed where all messages ge=t rendered */}
         <div className="w-full max-w-md flex-grow overflow-y-auto p-4">
           {messages.map(message => (
               <div
                   key={message.id}
-                  className={`p-2 my-2 rounded ${
-                      message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'
+                  className={`p-2 my-2 rounded text-white ${
+                      message.role === 'user' ? 'bg-blue-500' : 'bg-gray-700'
                   }`}
               >
                 {message.role === 'user' ? 'User: ' : 'AI: '}
@@ -81,6 +78,8 @@ export default function Page() {
           ))}
           <div ref={messageEndRef}/>
         </div>
+
+        {/* The Prompt control*/}
         <form onSubmit={handleSubmit} className="w-full max-w-md p-4 bg-gray-800 sticky bottom-0">
           <input
               value={input}
