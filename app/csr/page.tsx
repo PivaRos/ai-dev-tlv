@@ -5,7 +5,7 @@ import {Message} from "ai";
 import ColorPicker from "@/app/csr/ColorPicker";
 import ColorPreview from "@/app/csr/ColorPreview";
 import {useScrollToView} from "@/hooks/useScrollToView";
-import Link from "next/link";
+import {Top} from "@/shared/top";
 
 export default function Page() {
   const { messages, input, handleInputChange, handleSubmit, append } = useChat();
@@ -53,12 +53,8 @@ export default function Page() {
 
   return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-black text-white">
-        {/* Back button to return to home page */}
-        <div className="absolute top-4 left-4">
-          <Link href="/" className="flex items-center text-white text-2xl">
-            ⬅
-          </Link>
-        </div>
+
+        <Top label="CSR"/>
 
         {/* The Feed where all messages ge=t rendered */}
         <div className="w-full max-w-md flex-grow overflow-y-auto p-4">

@@ -1,44 +1,51 @@
 'use client';
 
-import { useChat } from 'ai/react';
 import {useScrollToView} from "@/hooks/useScrollToView";
-import Link from "next/link";
+import {Top} from "@/shared/top";
+import {FormEvent, useState} from "react";
+import { useActions, useUIState } from 'ai/rsc';
+import {AIContext} from "@/providers/ai";
 
 export default function Page() {
-  const { messages, input, handleInputChange, handleSubmit, append } = useChat();
-  const messageEndRef = useScrollToView(messages);
+  const [input, setInput] = useState<string>('');
+  const [conversation, setConversation] = useUIState<typeof AIContext>();
+  const { submitUserMessage } = useActions();
+
+  const conversationEndRef = useScrollToView(conversation as any);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setInput('');
+    setConversation(currentConversation => [
+      ...currentConversation,
+      <div>{input}</div>,
+    ]);
+    const message = await submitUserMessage(input);
+    setConversation(currentConversation => [...currentConversation, message]);
+  };
 
   return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-black text-white">
 
-        {/* Back button to return to home page */}
-        <div className="absolute top-4 left-4">
-          <Link href="/" className="flex items-center text-white text-2xl">
-            ⬅
-          </Link>
-        </div>
+      <Top label={'SSR'} />
 
         {/* The Feed where all messages ge=t rendered */}
         <div className="w-full max-w-md flex-grow overflow-y-auto p-4">
-          {messages.map(message => (
-              <div
-                  key={message.id}
-                  className={`p-2 my-2 rounded ${
-                      message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'
-                  }`}
-              >
-                {message.role === 'user' ? 'User: ' : 'AI: '}
-                {message.content}
-              </div>
+
+          {conversation.map((message: any , i) => (
+              <div key={i}
+                   className={`p-2 my-2 rounded text-white bg-blue-500`}
+              >{message}</div>
           ))}
-          <div ref={messageEndRef}/>
+
+          <div ref={conversationEndRef}/>
         </div>
 
         {/* The Prompt control*/}
         <form onSubmit={handleSubmit} className="w-full max-w-md p-4 bg-gray-800 sticky bottom-0">
           <input
               value={input}
-              onChange={handleInputChange}
+              onChange={e => setInput(e.target.value)}
               placeholder="Type a message..."
               className="w-full p-2 bg-gray-900 text-white rounded"
           />

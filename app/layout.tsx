@@ -1,6 +1,7 @@
 import type {ReactNode} from "react";
 import type {Metadata} from "next";
 import "./globals.css";
+import {AIContext} from "@/providers/ai";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +16,9 @@ export default function RootLayout({children}: LayoutProps) {
   return (
       <html lang="en">
       <body>
+      <AIContext>
         {children}
+      </AIContext>
       </body>
       </html>
   );
