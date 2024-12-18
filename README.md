@@ -7,7 +7,7 @@ Reference code for the Generative UI session at AI Dev TLV 2024.
 - add your OpenAi API key to the `.env` file
 
 ```bash
-  OPENAI_API_KEY=your-api-key
+  OPENAI_API_KEY=<your-api-key>
 ```
 
 - Install dependencies with `npm install`
