@@ -4,6 +4,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 Reference code for the Generative UI session at AI Dev TLV 2024.
 
+### Play, Explore, Break, and get Inspired!
+
 - add your OpenAi API key to the `.env` file
 
 ```bash
